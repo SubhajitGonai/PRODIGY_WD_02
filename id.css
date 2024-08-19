@@ -1,0 +1,317 @@
+
+
+
+
+
+.inner-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: center;
+  border-radius: 50%;
+  
+}
+
+.inner-circle.small {
+  background: conic-gradient(
+      rgba(226, 60, 60, 0.918) 0% 8.33%, 
+      rgb(216, 161, 60) 8.33% 16.66%, 
+      rgb(226, 226, 68) 16.66% 25%, 
+      rgb(84, 240, 84) 25% 33.33%, 
+      rgb(115, 115, 236) 33.33% 41.66%, 
+      rgb(187, 106, 245) 41.66% 50%, 
+      violet 50% 58.33%, 
+      pink 58.33% 66.66%, 
+      cyan 66.66% 75%, 
+      lime 75% 83.33%, 
+      magenta 83.33% 91.66%, 
+      rgb(235, 159, 88) 91.66% 100%
+  );
+  width: 305px; 
+  height: 305px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1; /* Ensure it is layered below the other circles */
+}
+
+
+
+.inner-circle.smallest {
+  background: conic-gradient(
+      turquoise 0% 12.5%, 
+      lavender 12.5% 25%, 
+      peachpuff 25% 37.5%, 
+      hotpink 37.5% 50%, 
+      chartreuse 50% 62.5%, 
+      sienna 62.5% 75%, 
+      slateblue 75% 87.5%, 
+      tomato 87.5% 100%
+  );
+  width: 175px; 
+  height: 175px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Ensure it is layered above the other circles */
+}
+
+
+.inner-circle.smaller {
+  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #252525;
+    border: 2px solid #fdfdfd; /* Adjust border width */
+    box-shadow: -4px -4px 10px rgba(91, 117, 231, 0.979),
+              inset 4px 4px 10px rgba(1, 252, 198, 0.788),
+              inset -4px -4px 10px rgba(243, 57, 57, 0.973),
+              4px 4px 10px rgba(247, 1, 193, 0.884);
+  width: 85%;
+  height: 85%;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3; /* Ensure it is layered between the other circles */
+  overflow: hidden; /* Ensure segments stay within this circle */
+}
+
+
+.segment {
+  position: absolute;
+  width: 50%; /* Half the width of the inner circle */
+  height: 50%; /* Half the height of the inner circle */
+  top: 50%;
+  left: 50%;
+  background-color: transparent; /* Default transparent, customize as needed */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); /* Full segment shape */
+  transform-origin: 0% 0%; /* Rotation around the top-left corner */
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.segment-text {
+  font-size: 2em; /* Adjust font size */
+  color: aqua; /* Customize text color */
+  text-align: center;
+  font-weight: bold;
+  z-index: 91;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Base style for the indicator */
+.indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 60%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: center;
+  z-index: 4;
+}
+
+/* Large hand style */
+.large-hand {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4px; /* Make it wider for visibility */
+  height: 60%;
+  background: var(--clr);
+  transform: translateX(-50%);
+  transform-origin: bottom;
+  z-index: 5;
+}
+
+.wheel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: black;
+}
+
+.wheel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border-color: black;
+  overflow: hidden;
+}
+
+.division-line {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  width: 2px; /* Thickness of the line */
+  height: 120px; /* Length of the line, adjust this to match the size of your small circle */
+  background-color: rgba(255, 0, 106, 0.651); /* Line color */
+  transform-origin: 50% 100%; /* Rotate around the center */
+  z-index: 6; /* Ensure it's above other elements */
+}
+
+/* Pin Styling */
+.pin {
+  position: absolute;
+  width: 2em;
+  height: 2em;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(38, 0, 255); /* Deep blue background */
+  border: 5px solid #ffffff;
+  border-radius: 50%;
+  margin: auto;
+  z-index: 7;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Elegant shadow for depth */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Container for rotating lights, centered relative to the wheel */
+#lights-container {
+  position: absolute;
+  top: 35%;
+  left: 35%;
+  width: 100px; /* Adjust to match the desired size */
+  height: 100px; /* Adjust to match the desired size */
+  transform: translate(-50%, -50%); /* Center container */
+  z-index: 2; /* Ensure it appears above other elements */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Apply rotation to the lights container */
+.rotate-lights {
+  animation: rotateLights 3s linear infinite;
+}
+
+/* Keyframes for rotating lights */
+@keyframes rotateLights {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Each light styled individually */
+.light {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  border-radius: 50%;
+  background-color: var(--clr); /* Adjust color with a CSS variable */
+  animation: blink 1s infinite alternate;
+}
+
+/* Positioning lights around the center of the container */
+.green-light {
+  top: 50%; /* Center vertically in the container */
+  left: 50%; /* Center horizontally in the container */
+  transform: translate(-50%, -50%) rotate(0deg) translateY(-40px); /* Center around its own point and adjust distance from center */
+}
+
+.red-light {
+  top: 50%; /* Center vertically in the container */
+  left: 50%; /* Center horizontally in the container */
+  transform: translate(-50%, -50%) rotate(120deg) translateY(-40px); /* Rotate to position around the center */
+}
+
+.yellow-light {
+  top: 50%; /* Center vertically in the container */
+  left: 50%; /* Center horizontally in the container */
+  transform: translate(-50%, -50%) rotate(240deg) translateY(-40px); /* Rotate to position around the center */
+}
+
+/* Keyframes for blinking effect */
+@keyframes blink {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+
+
+/* Spinning animation for the wheel */
+#wheel.spinning {
+  transition: transform 4s ease-out;
+}
+
+/* Animation for the indicator */
+@keyframes rotateClockwise {
+  from {
+      transform: translate(-50%, -100%) rotate(0deg);
+  }
+  to {
+      transform: translate(-50%, -100%) rotate(360deg);
+  }
+}
+
+
+/* Apply the animation */
+#indicator {
+  transition: transform 4s ease-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+

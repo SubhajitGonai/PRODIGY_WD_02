@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Scheduler</title>
+    <link rel="stylesheet" href="design/gamebox.css">
+    <link rel="stylesheet" href="design/id.css">
+    
+    
+</head>
+<body>
+    <div id="tournament-heading-box">
+        <h1 id="tournament-heading">Tournament</h1>
+    </div>
+    <div id="main-container">
+        
+            <div id="selected-players" class="hidden">
+                <div class="player-count"></div>
+                <h2>Welcome</h2>
+                <ul id="player-list"></ul> <!-- Container for player names and emojis -->
+            </div>
+            
+            <div id="container">
+                <div id="input-section">
+                    <label for="player-count">Players (4-7):
+                    <input type="number" id="player-count" min="4" max="7" value="4"></label>
+                    <button onclick="scheduleTournament()">Schedule</button>
+                </div>
+                <div id="tournament-table">
+                    <h2>Tournament Matches</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Match</th>
+                                <th>Players</th>
+                                <th>Winner</th>
+                            </tr>
+                        </thead>
+                        <tbody id="match-list">
+                            <!-- Match rows will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="tic-tac-toe-game" class="hidden">
+                <div id="game-box">
+                    <div id="tic-tac-toe-board">
+                        <div class="tic-tac-toe-cell" data-index="0"></div>
+                        <div class="tic-tac-toe-cell" data-index="1"></div>
+                        <div class="tic-tac-toe-cell" data-index="2"></div>
+                        <div class="tic-tac-toe-cell" data-index="3"></div>
+                        <div class="tic-tac-toe-cell" data-index="4"></div>
+                        <div class="tic-tac-toe-cell" data-index="5"></div>
+                        <div class="tic-tac-toe-cell" data-index="6"></div>
+                        <div class="tic-tac-toe-cell" data-index="7"></div>
+                        <div class="tic-tac-toe-cell" data-index="8"></div>
+                    </div>
+                    <div id="action-buttons">
+                        <button id="reset-button" onclick="resetGame()">Reset</button>
+                        <button id="back-to-main-menu" onclick="goBack()">Back To Main Menu</button>
+                    </div>
+                    <button id="playAgainBtn" style="display: none;">Play Again</button>
+                </div>
+                <div id="spinWheelPopup" style="display: none;">
+                    
+                    <div class="wheelbox">
+                        <div class="wheel-container">
+                            <div class="wheel" id="wheel"></div>
+                            <div class="inner-circle small" id="innercircle1"></div>
+                            <div class="inner-circle smaller" id="innercircle2">
+                                <!-- Outer wheel sectors will be created dynamically with JavaScript -->
+                            </div>
+                            <div class="inner-circle smallest" id="innercircle3"></div>
+                            <div class="indicator" id="indicator" style="--clr:#d7fc04;">
+                                <div class="large-hand"></div>
+                            </div>
+                            <div class="pin">
+                                <div class="spinBtn" id="spinBtn" style="display: none;" onclick="spinWheel(currentMatchId)">Spin</div> 
+                            </div>
+                
+                            <!-- Lights container wrapping the rotating lights -->
+                            <div id="lights-container">
+                                <div class="light green-light" style="--clr:#04fc43;"><i></i></div>
+                                <div class="light red-light" style="--clr:#fc3e04;"><i></i></div>
+                                <div class="light yellow-light" style="--clr:#f8fc04;"><i></i></div>
+                                <!-- Add more lights if needed -->
+                            </div>
+                        </div>
+                    </div>
+                </div>            
+                
+                <button id="playAgainButton" style="display: none;">Play Again</button>
+
+                <div id="tournamentWinnerPopup" style="display: none;">
+                    <div id="tournamentWinnerText"></div>
+                </div>
+                    
+                <div id="winnerNotification" style="display: none;">
+                    <div id="winnerText"></div>
+                </div>            
+            </div>
+    </div>
+  
+
+<script src="exam.js"></script>
+<script>
+  
+</script>
+<!--<script src="spin.js"></script>-->
+</body>
+</html>

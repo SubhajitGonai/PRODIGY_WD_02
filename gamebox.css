@@ -1,0 +1,1242 @@
+/* Ensure the body takes up the full viewport height */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #252525;
+    /* Prevent body scrolling */
+    overflow: hidden; /* Disable scrolling */
+    height: 100vh; /* Full viewport height to avoid scrolling */
+}
+
+
+#main-container {
+    display: flex;
+    align-items: flex-start; /* Align items to the start to have the players box on the left */
+    justify-content: center;
+    position: relative;
+    width: 200%; /* Double the width for sliding animation */
+    height: 100%;
+    transition: transform 0.5s ease;
+    margin-top: 400px; /* Adjust the value as needed */
+}
+
+#container, #schedule-container {
+    text-align: center;
+    background-color: #252525;
+    border-radius: 15px;
+    border: 2px solid #fdfdfd; /* Adjust border width */
+    box-shadow: -4px -4px 10px rgba(67,67,67,0.5),
+              inset 4px 4px 10px rgba(1, 252, 198, 0.788),
+              inset -4px -4px 10px rgba(67,67,67,0.5),
+              4px 4px 10px rgba(247, 4, 194, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    width: 300px;
+    max-width: 100%;
+    position: fixed; /* Fix position */
+    top: 110px; /* Adjust vertical position */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center horizontally */
+    margin: 0; /* Remove any default margins */
+}
+
+#game-box {
+    width: 300px; /* Same width as #container */
+    height: 300px; /* Fixed height */
+    background-color: #252525;
+    border: 2px solid #fdfdfd; /* Adjust border width */
+    box-shadow: -4px -4px 10px rgba(67,67,67,0.5),
+              inset 4px 4px 10px rgba(1, 252, 198, 0.788),
+              inset -4px -4px 10px rgba(67,67,67,0.5),
+              4px 4px 10px rgba(247, 4, 194, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    position: fixed; /* Fix position */
+    top: 13%; /* Same vertical position as #schedule-container */
+    right: 70px; /* Gap from the right edge */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #333;
+    border: 2px solid #007bff; /* Match border style */
+}
+
+/* Wheelbox containing the circles */
+.wheelbox {
+    width: 300px; /* Same width as #container */
+    height: 300px; /* Fixed height */
+    background-color: #252525;
+    border: 2px solid #fdfdfd; /* Adjust border width */
+    box-shadow: -4px -4px 10px rgba(67,67,67,0.5),
+              inset 4px 4px 10px rgba(1, 252, 198, 0.788),
+              inset -4px -4px 10px rgba(67,67,67,0.5),
+              4px 4px 10px rgba(247, 4, 194, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    position: fixed; /* Fix position */
+    top: 13%; /* Same vertical position as #schedule-container */
+    right: 70px; /* Gap from the right edge */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #333;
+    border: 2px solid #007bff; /* Match border style */
+  }
+  
+/* Player Color Palette */
+.player1 { background-color: #00befd; } /* Light Blue */
+.player2 { background-color: #d7f141; } /* Light Green */
+.player3 { background-color: #4752ec; } /* Light Coral */
+.player4 { background-color: #ec14f3; } /* Light Goldenrod Yellow */
+.player5 { background-color: #e79345; } /* Light Pink */
+.player6 { background-color: #02a59d8f; } /* Light Sea Green */
+.player7 { background-color: #8105f5; } /* Light Gray */
+
+/* Styling for Selected Players Container */
+#selected-players {
+    width: 300px;
+    height: auto;
+    text-align: center;
+    background-color: #252525;
+    border: 2px solid #fdfdfd;
+    box-shadow: -4px -4px 10px rgba(67,67,67,0.5),
+              inset 4px 4px 10px rgba(1, 252, 198, 0.788),
+              inset -4px -4px 10px rgba(67,67,67,0.5),
+              4px 4px 10px rgba(247, 4, 194, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    font-size: 16px;
+    color: #333;
+    position: fixed;
+    top: 35%;
+    left: 60px;
+    transform: translateY(-50%);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Player Box Styling Inside Selected Players */
+#selected-players .player-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 22px);
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+    animation: slideUpFadeIn 0.8s ease forwards;
+    animation-delay: var(--animation-delay);
+}
+
+/* Set player box colors automatically */
+#selected-players .player-box.player1 { background-color: #00befd; }
+#selected-players .player-box.player2 { background-color: #d7f141; }
+#selected-players .player-box.player3 { background-color: #4752ec; }
+#selected-players .player-box.player4 { background-color: #ec14f3; }
+#selected-players .player-box.player5 { background-color: #e79345; }
+#selected-players .player-box.player6 { background-color: #02a59d8f; }
+#selected-players .player-box.player7 { background-color: #8105f5; }
+
+/* Keyframes for Animation */
+@keyframes slideUpFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* If you have specific class for the text, you can use it */
+.player-info {
+    color: #fff; /* Set text color to white */
+}
+
+
+/* Staggered Appearance */
+#selected-players .player-box:nth-child(1) {
+    --animation-delay: 0.1s;
+}
+#selected-players .player-box:nth-child(2) {
+    --animation-delay: 0.2s;
+}
+#selected-players .player-box:nth-child(3) {
+    --animation-delay: 0.3s;
+}
+#selected-players .player-box:nth-child(4) {
+    --animation-delay: 0.4s;
+}
+#selected-players .player-box:nth-child(5) {
+    --animation-delay: 0.5s;
+}
+#selected-players .player-box:nth-child(6) {
+    --animation-delay: 0.6s;
+}
+#selected-players .player-box:nth-child(7) {
+    --animation-delay: 0.7s;
+}
+
+/* Hover Effect for Player Boxes */
+#selected-players .player-box:hover {
+    background-color: #fc6108de;
+    box-shadow: 0 4px 8px rgba(0, 248, 227, 0.2);
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Light Effect for Winner in Tournament Matches Table */
+.match-winner {
+    background-color: #e0ffe0; /* Light green background */
+    border: 2px solid #28a745; /* Bold green border */
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.7); /* Green shadow */
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Optional: Loser Highlight Effect */
+.match-loser {
+    background-color: #f8d7da; /* Light red background */
+    border: 2px solid #dc3545; /* Bold red border */
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.7); /* Red shadow */
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Winner Popup Animation */
+@keyframes popupEffect {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.winner-popup {
+    animation: popupEffect 1s ease-in-out;
+}
+
+.column-1 {
+    background-color: gold;
+}
+.column-2 {
+    background-color: lightblue;
+}
+.column-3 {
+    background-color: lightcoral;
+}
+
+/* Additional styling for player boxes */
+.player-box {
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.2em;
+    margin: 5px;
+    position: relative;
+}
+
+
+
+/* List Styling for Selected Players */
+#selected-players ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* List Item Styling */
+#selected-players ul li {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+/* Hover Effect for List Items */
+#selected-players ul li:hover {
+    background-color: #e9ecef;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
+/* Optional Icon Styling for List Items */
+#selected-players ul li i {
+    margin-right: 10px;
+    color: #007bff;
+    font-size: 18px;
+}
+
+/* Animation for winner effect */
+@keyframes winnerEffect {
+    0% {
+        box-shadow: 0 4px 12px rgba(50, 205, 50, 0.5); /* Initial green shadow */
+    }
+    100% {
+        box-shadow: none; /* No shadow at the end */
+    }
+}
+
+/* Winner highlight effect with animation */
+.winner-highlight {
+    background-color: #90EE90; /* Light green background */
+    border: 2px solid #20da20; /* Bold green border */
+    animation: winnerEffect 5s forwards; /* Apply the animation */
+    transition: background-color 0.5s ease, border-color 0.5s ease; /* Smooth transitions */
+}
+
+/* Animation for losing effect */
+@keyframes loseEffect {
+    0% {
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.5); /* Initial red shadow */
+    }
+    100% {
+        box-shadow: none; /* No shadow at the end */
+    }
+}
+
+/* Loser highlight effect with animation */
+.losing {
+    background-color: #f8d7da; /* Light red background */
+    border: 2px solid #dd2134; /* Bold red border */
+    animation: loseEffect 5s forwards; /* Apply the animation */
+    transition: background-color 0.5s ease, border-color 0.5s ease; /* Smooth transitions */
+}
+
+
+
+#input-section {
+    margin-bottom: 15px; /* Space below the input section */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    background-color: #252525;
+    border: 2px solid #fdfdfd; /* Adjust border width */
+    box-shadow: -4px -4px 10px rgba(228, 169, 169, 0.5),
+              inset 4px 4px 10px rgba(1, 252, 198, 0.788),
+              inset -4px -4px 10px rgba(70, 189, 236, 0.5),
+              4px 4px 10px rgba(1, 67, 250, 0.3);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Flexbox to align label and input horizontally */
+#input-section .input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+#input-section label {
+    margin-right: 10px;
+    font-weight: 600;
+    color: #eee5b2;
+}
+
+#input-section input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 120px;
+    box-sizing: border-box;
+}
+
+/* Centering the schedule button below the input and label */
+#input-section button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 10px; /* Space above button */
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Smooth Fade-in and Slide Animations for Elements */
+#input-section {
+    animation: fadeInSlide 1s ease-out forwards;
+}
+
+@keyframes fadeInSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px); /* Slide from top */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* Arrive at original position */
+    }
+}
+
+/* Button Click Animation */
+button {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:active {
+    transform: scale(0.98); /* Subtle shrink effect */
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.15);
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    z-index: -1;
+    transition: transform 0.4s ease;
+}
+
+button:hover::before {
+    transform: translate(-50%, -50%) scale(1); /* Ripple effect */
+}
+
+/* Input Field Focus Animation */
+#input-section input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Container for the selector box to enable 3D effect */
+#player-count-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Selector box styling */
+#player-count {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-size: 16px;
+    color: #333;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* Apply 3D effect on hover */
+#player-count:hover {
+    transform: rotateX(10deg) rotateY(10deg) translateZ(20px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Shimmering effect */
+@keyframes shimmer {
+    0% {
+        background-position: -100% 0;
+    }
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+#player-count {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.1) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+
+/* Reduced Input Section Styling */
+#input-section {
+    margin-bottom: 7px; /* Reduced space below the input section */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #252525;
+    border: 2px solid #fdfdfd; /* Adjust border width */
+    box-shadow: -4px -4px 10px rgba(67,67,67,0.5),
+              inset 4px 4px 10px rgba(1, 252, 198, 0.788),
+              inset -4px -4px 10px rgba(67,67,67,0.5),
+              4px 4px 10px rgba(247, 4, 194, 0.3);
+    border-radius: 15px;
+    border-radius: 6px; /* Slightly smaller rounded corners */
+    padding: 7px; /* Reduced padding around the content */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border: 1px solid #ddd; /* Thinner border */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Smooth transitions */
+}
+
+
+/* Color Flash Effect */
+@keyframes flash {
+    0% {
+        background-color: #817feefa;
+    }
+    50% {
+        background-color: #88e1ec; /* Light cyan for flash */
+    }
+    100% {
+        background-color: #f0cde0;
+    }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+#input-section:hover {
+    animation: flash 1s ease-in-out; /* Uncomment for Color Flash Effect */
+    /* animation: pulse 1s infinite; */ /* Uncomment for Pulse Animation */
+    background-color: #e0f7fa; /* Optional: Background color change on hover */
+    border-color: #007bff; /* Optional: Change border color on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Optional: Deeper shadow on hover */
+}
+
+
+
+button {
+    padding: 5px 10px; /* Larger padding for button */
+    background-color: #007bff; /* Primary button color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 3px; /* Rounded corners */
+    cursor: pointer;
+    font-size: 4px; /* Larger font size for button text */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker color on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Heading Styles */
+h1 {
+    font-size: 22px; /* Slightly smaller font size */
+    margin-bottom: 12px; /* Reduced space below the heading */
+    color: #ffffff; /* Dark text color */
+    text-align: center; /* Center align the heading */
+}
+
+h2 {
+    font-size: 18px; /* Smaller font size for sub-headings */
+    margin-bottom: 8px; /* Reduced space below the heading */
+    color: #007bff; /* Primary color for sub-headings */
+    text-align: center; /* Center align the heading */
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px; /* Reduced margin to reduce vertical gap */
+    font-size: 12px;
+    background-color: #252525;
+    border: 2px solid #fdfdfd; /* Adjust border width */
+    box-shadow: -4px -4px 10px rgba(67,67,67,0.5),
+              inset 4px 4px 10px rgba(1, 252, 198, 0.788),
+              inset -4px -4px 10px rgba(67,67,67,0.5),
+              4px 4px 10px rgba(247, 4, 194, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    animation: fadeInScale 0.8s ease forwards; /* Animation for table appearance */
+}
+
+/* Table Header Styling */
+thead th {
+    background-color: #4aa5e2;
+    color: #fff;
+    padding: 8px; /* Reduced padding for less vertical space */
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 3px solid #357ab8;
+    animation: fadeInUp 0.5s ease forwards; /* Animation for header */
+}
+
+/* Table Data Cell Styling */
+tbody td {
+    padding: 8px; /* Reduced padding for less vertical space */
+    border: 1px solid #ddd;
+    text-align: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.5s ease forwards; /* Animation for data cells */
+    color: #dce6ef;
+}
+
+/* Hover Effect for Table Data Cells */
+tbody td:hover {
+    background-color: #ffeee9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Keyframes for Fade In and Scale Animation */
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.95); /* Start slightly smaller */
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1); /* End at original size */
+    }
+}
+
+/* Keyframes for Fade In Up Animation */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px); /* Start from below */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* End at original position */
+    }
+}
+
+
+/* Player Box Styling */
+.player-box {
+    display: inline-block;
+    width: 20px; /* Reduced size */
+    height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    line-height: 20px;
+    margin: 0 4px;
+    font-size: 10px; /* Adjusted font size */
+    background-color: #4a90e2;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.player-box:hover {
+    transform: scale(1.1);
+    background-color: #357ab8;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Winner Popup Styling */
+.player-box.winner-popup {
+    animation: winnerPopup 5s ease forwards; /* Popup for 5 seconds */
+}
+
+/* Keyframe for Winner Popup Animation */
+@keyframes winnerPopup {
+    0%, 90% {
+        transform: scale(1.2);
+        box-shadow: 0 0 25px rgba(255, 255, 0, 0.8); /* Default yellow glow */
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: none;
+    }
+}
+
+/* Dynamic Popup Colors Based on Winner Column */
+.player-box.winner-popup.column-1 {
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.8); /* Red glow for column 1 winner */
+}
+
+.player-box.winner-popup.column-2 {
+    box-shadow: 0 0 25px rgba(0, 255, 0, 0.8); /* Green glow for column 2 winner */
+}
+
+.player-box.winner-popup.column-3 {
+    box-shadow: 0 0 25px rgba(0, 0, 255, 0.8); /* Blue glow for column 3 winner */
+}
+
+
+/* Player vs Cell Styling */
+.player-vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f0f4f7;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.6s ease forwards;
+    
+}
+
+.player-vs:hover {
+    background-color: #dce6ef;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.player-number {
+    margin: 0 12px;
+    font-weight: bold;
+    color:aquamarine;
+}
+/* Tournament Matches Section */
+.tournament-matches .match-number,
+.tournament-matches .vs {
+    color: #fff; /* Set text color to white */
+}
+
+/* Optional: If these elements are table headers or cells, you might need additional selectors */
+.tournament-matches thead th.match-number,
+.tournament-matches tbody td.match-number,
+.tournament-matches thead th.vs,
+.tournament-matches tbody td.vs {
+    color: #fff; /* Set text color to white */
+}
+
+
+/* Keyframes for Animations */
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes winnerAnimation {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 15px rgba(40, 167, 69, 0.8);
+    }
+    100% {
+        transform: scale(1.2); /* Slight scaling effect */
+        box-shadow: 0 0 25px rgba(40, 167, 69, 1); /* Stronger glow */
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Player Color Palette */
+.player1 { background-color: #00befd; } /* Light Blue */
+.player2 { background-color: #d7f141; } /* Light Green */
+.player3 { background-color: #4752ec; } /* Light Coral */
+.player4 { background-color: #ec14f3; } /* Light Goldenrod Yellow */
+.player5 { background-color: #e79345; } /* Light Pink */
+.player6 { background-color: #02a59d8f; } /* Light Sea Green */
+.player7 { background-color: #8105f5; } /* Light Gray */
+
+
+
+/* Winner and Loser Styling */
+.winner {
+    border: 3px solid gold; /* Gold border for winner */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8); /* Golden glow for winners */
+    background-color:aqua;
+    animation: winnerPulse 0.8s infinite alternate;
+}
+
+.loser {
+    border: 3px solid red; /* Red border for loser */
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* Red glow for losers */
+    background-color:aqua;
+}
+
+/* Winner Pulse Animation */
+@keyframes winnerPulse {
+    from {
+        transform: scale(0.7);
+        box-shadow: 0 0 15px rgb(235, 224, 162);
+    }
+    to {
+        transform: scale(1);
+        box-shadow: 0 0 25px rgb(235, 224, 162);
+    }
+}
+
+#tic-tac-toe-game {
+    display: none; /* Hide initially */
+    width: 320px; /* Width of the Tic-Tac-Toe box */
+    position: relative; /* Position relative to the main container */
+    margin-left: 20px; /* Space between the container and game box */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+#tic-tac-toe-game.show {
+    display: block; /* Show when needed */
+}
+
+#tic-tac-toe-game h2 {
+    margin-top: 0; /* Remove top margin */
+    margin-bottom: 10px; /* Space between heading and game box */
+}
+
+#tic-tac-toe-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    width: 90%;
+    height: 90%;
+}
+
+/* Tic-Tac-Toe Cell Styling */
+.tic-tac-toe-cell {
+    background-color: #f5f5f5; /* Soft light gray background */
+    border: 2px solid #007bff; /* Modern blue border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #333;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Hover effect for a dynamic feel */
+.tic-tac-toe-cell:hover {
+    background-color: #e0e0e0; /* Slightly darker gray on hover */
+    transform: scale(1.05); /* Slight enlargement on hover */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.6); /* Blue glow on hover */
+}
+
+/* Winning cell animation */
+.tic-tac-toe-cell.winning {
+    animation: winningAnimation 1s ease-in-out forwards, pulseGlow 2s ease-in-out infinite, sparkle 2s linear infinite;
+}
+
+/* Winning keyframes for a smooth scale effect */
+@keyframes winningAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Pulse glow effect for a winning cell */
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); } /* Gold glow */
+    50% { box-shadow: 0 0 20px rgba(255, 215, 0, 1); } /* Stronger glow */
+    100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); } /* Dimmer glow */
+}
+
+/* Sparkle effect for a precious feel */
+@keyframes sparkle {
+    0% { background-color: #f5f5f5; }
+    25% { background-color: #fffff0; } /* Slightly lighter */
+    50% { background-color: #f5f5f5; }
+    75% { background-color: #fffff0; } /* Slightly lighter */
+    100% { background-color: #f5f5f5; }
+}
+
+/* Click animation for smooth interaction */
+.tic-tac-toe-cell:active {
+    transform: scale(0.95);
+}
+
+
+/* Container for action buttons */
+/* Container for action buttons */
+#action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 8px;
+    position: fixed; /* Fix position */
+    bottom: 20px; /* Fixed from bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center alignment */
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+/* General button styles */
+#action-buttons button {
+    background-color: #007bff;
+    border: none;
+    color: #ffffffea;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative; /* For additional effects */
+}
+
+/* Specific button styles */
+#action-buttons #reset-button {
+    background-color: #dc3545;
+}
+
+#action-buttons #back-to-main-menu {
+    background-color: #6c757d;
+}
+
+
+
+/* Hover effects for specific buttons */
+#action-buttons #reset-button:hover {
+    background-color: #e28a93;
+}
+
+#action-buttons #back-to-main-menu:hover {
+    background-color: #6baee2;
+}
+
+/* Enhanced Play Again button styles */
+#playAgainBtn {
+    background-color: #007bffa8;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    position: fixed; /* Fix position */
+    bottom: 80px; /* Positioned above action buttons */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center alignment */
+    z-index: 1000; /* Ensure it appears above other elements */
+    display: none; /* Hidden by default */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transitions without transform */
+}
+
+/* Hover effect for Play Again button */
+#playAgainBtn:hover {
+    background-color: #8f07ff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Add shadow */
+    animation: pulseGlow 1s infinite; /* Add pulse glow animation */
+}
+
+/* Pulse glow animation */
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* No shadow at start */
+        opacity: 0.9;
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 0, 255, 0.6); /* Blue glow */
+        opacity: 1;
+    }
+    100% {
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* No shadow at end */
+        opacity: 0.9;
+    }
+}
+
+#tournament-heading {
+    text-align: center;
+    font-size: 24px;
+    color: #fff;
+    padding: 20px 40px;
+    background: linear-gradient(135deg, #ffd700, #ff8c00); /* Gold gradient */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: fixed; /* Fix position */
+    top: 10px; /* Adjust this value as needed to position it above the schedule box */
+    left: 50%;
+    transform: translateX(-50%);
+    border: 3px solid #ffd700; /* Golden border */
+    font-family: 'Georgia', serif; /* Elegant font */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow for text */
+    animation: royalGlow 2s infinite alternate; /* Animation for a glowing effect */
+}
+
+@keyframes royalGlow {
+    0% {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        transform: translateX(-50%) scale(1);
+    }
+    100% {
+        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+        transform: translateX(-50%) scale(1.05);
+    }
+}
+
+/* Ensure the main container has a relative position to allow absolute positioning within it */
+#main-container {
+    position: relative;
+}
+
+/* Winner Notification Styles */
+#winnerNotification {
+    display: none;
+    position: fixed;
+    top: 20%; /* Adjusted to move it more down */
+    left: 50%;
+    transform: translateX(-50%) translateY(-30px); /* Start slightly above */
+    background-color: #fff5b3; /* Soft yellow background */
+    padding: 20px 30px; /* Increased padding for better appearance */
+    border: 2px solid #ffd700; /* Golden border for a "winner" feel */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    font-size: 18px; /* Larger font for readability */
+    font-weight: bold; /* Bold text for emphasis */
+    color: #333; /* Darker text for contrast */
+    z-index: 10000;
+    opacity: 0; /* Start hidden */
+    animation: slideFadeIn 1s ease forwards; /* Slide and fade-in effect */
+}
+
+/* Keyframes for Slide and Fade-in Animation */
+@keyframes slideFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-30px); /* Start slightly above */
+    }
+    50% {
+        opacity: 0.7; /* Slightly transparent halfway through */
+        transform: translateX(-50%) translateY(10px); /* Slight downward movement */
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0); /* End at final position */
+    }
+}
+
+/* Keyframes for Slide and Fade-out Animation */
+@keyframes slideFadeOut {
+    0% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0); /* Start at final position */
+    }
+    50% {
+        opacity: 0.7; /* Slightly transparent halfway through */
+        transform: translateX(-50%) translateY(10px); /* Slight downward movement */
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-30px); /* Slide back up */
+    }
+}
+
+/* When notification is triggered */
+#winnerNotification.show {
+    display: block;
+    animation: slideFadeIn 1s ease forwards;
+}
+
+/* When notification hides */
+#winnerNotification.hide {
+    animation: slideFadeOut 1s ease forwards;
+    opacity: 0;
+}
+
+.popup {
+    position: fixed;
+    bottom: 40px; /* Adjusted position for better visibility */
+    left: 50%;
+    transform: translateX(-50%) translateY(0); /* Center horizontally */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    font-size: 16px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    max-width: 90%;
+    width: auto;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.popup-show {
+    opacity: 1;
+    animation: popup-animation 0.6s ease forwards;
+}
+
+
+
+
+
+
+/* Spin Button Styling */
+#spin-btn {
+    display: none; /* Initially hidden */
+    position: absolute;
+    width: 1.5em; /* Adjusted size for better fit */
+    height: 1.5em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centered within the pin */
+    background-color: #ffd700; /* Luxurious golden background */
+    border: 2px solid #ffffff; /* White border for contrast */
+    border-radius: 50%; /* Circular shape */
+    color: #333; /* Dark text for readability */
+    font-size: 0.7em; /* Adjusted font size for better fit */
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.5em; /* Center text vertically */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    z-index: 50;
+    cursor: pointer;
+    transition: all 0.4s ease; /* Smooth transition */
+    opacity: 0; /* Initially hidden */
+    animation: spin-btn-fade-in 1s ease forwards; /* Fade-in animation */
+}
+
+/* Spin Button Hover Effect */
+#spin-btn:hover {
+    background-color: #ffcc00; /* Slightly lighter gold on hover */
+    transform: translate(-50%, -50%) scale(1.1); /* Slightly enlarged on hover */
+}
+
+/* Fade-In Animation */
+@keyframes spin-btn-fade-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5); /* Start small and invisible */
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1); /* End at full size and visible */
+    }
+}
+
+/* Optional Rotation Animation */
+@keyframes spin-btn-rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Apply Rotation Animation */
+#spin-btn.spin {
+    animation: spin-btn-rotate 2s linear infinite; /* Continuous rotation */
+}
+
+
+
+
+/* Remove the invalid rule */
+#game-box:visible #spin-btn {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+/* Define the animation */
+@keyframes shiftAnimation {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(10px); /* Shift right */
+    }
+    100% {
+        transform: translateX(0); /* Back to original position */
+    }
+  }
+  
+  /* Apply animation to the button */
+  #back-to-main-menu {
+    transition: transform 0.3s ease;
+  }
+  
+  /* Add class for animation */
+  .animate-shift {
+    animation: shiftAnimation 0.6s ease;
+  }
+  
